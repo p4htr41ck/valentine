@@ -4,12 +4,12 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Valentine?</title>
+    <title>Will you be my valentine?</title>
     <style>
       :root {
         --bg1: #ffdde1;
         --bg2: #ee9ca7;
-        --card: rgba(255, 255, 255, 0.75);
+        --card: rgba(255, 255, 255, 0.78);
         --text: #2b2b2b;
         --yes: #22c55e;
         --no: #ef4444;
@@ -22,42 +22,48 @@
         min-height: 100vh;
         display: grid;
         place-items: center;
+        padding: 16px;
         background: radial-gradient(circle at top, var(--bg1), var(--bg2));
-        overflow: hidden;
+        overflow-x: hidden;
         color: var(--text);
       }
 
       .card {
-        width: min(600px, 92vw);
+        width: min(640px, 100%);
         background: var(--card);
         backdrop-filter: blur(10px);
-        border: 1px solid rgba(255,255,255,0.5);
+        border: 1px solid rgba(255,255,255,0.55);
         border-radius: 24px;
-        padding: 28px 22px;
+        padding: 22px 18px;
         box-shadow: 0 18px 40px rgba(0,0,0,0.12);
         text-align: center;
-        position: relative;
       }
 
       h1 {
-        margin: 0 0 18px;
-        font-size: clamp(28px, 4vw, 44px);
+        margin: 4px 0 12px;
+        font-size: clamp(26px, 7vw, 44px);
         letter-spacing: -0.02em;
+        line-height: 1.1;
       }
 
-      p {
-        margin: 10px 0 0;
-        font-size: 16px;
+      .subtitle {
+        margin: 0 0 14px;
+        font-size: clamp(14px, 3.8vw, 16px);
         opacity: 0.9;
       }
 
       .buttons {
-        margin-top: 22px;
-        display: flex;
+        margin-top: 14px;
+        display: grid;
         gap: 12px;
-        justify-content: center;
-        align-items: center;
-        flex-wrap: wrap;
+        grid-template-columns: 1fr;
+      }
+
+      @media (min-width: 520px) {
+        .buttons {
+          grid-template-columns: auto auto;
+          justify-content: center;
+        }
       }
 
       button {
@@ -66,38 +72,44 @@
         font-size: 18px;
         border-radius: 14px;
         cursor: pointer;
-        font-weight: 700;
+        font-weight: 800;
         transition: transform 120ms ease, filter 120ms ease;
         color: white;
         user-select: none;
+        min-height: 48px;
+        width: 100%;
+      }
+
+      @media (min-width: 520px) {
+        button { width: auto; min-width: 140px; }
       }
 
       button:active { transform: scale(0.98); }
       button:hover { filter: brightness(1.05); }
 
       #yesBtn { background: var(--yes); }
-      #noBtn  { background: var(--no); position: relative; }
+      #noBtn  { background: var(--no); }
+
+      .note {
+        margin-top: 12px;
+        min-height: 22px;
+        font-weight: 700;
+      }
 
       .celebrate {
         display: none;
-        margin-top: 18px;
+        margin-top: 14px;
         animation: pop 280ms ease-out;
       }
 
       .badge {
         display: inline-block;
-        margin-top: 10px;
+        margin-top: 8px;
         padding: 8px 12px;
         border-radius: 999px;
         background: rgba(34, 197, 94, 0.15);
         border: 1px solid rgba(34, 197, 94, 0.35);
-        font-weight: 700;
-      }
-
-      .note {
-        margin-top: 10px;
-        min-height: 22px;
-        font-weight: 600;
+        font-weight: 800;
       }
 
       .media-grid {
@@ -107,31 +119,28 @@
         grid-template-columns: 1fr;
       }
 
-      @media (min-width: 520px) {
-        .media-grid {
-          grid-template-columns: 1fr 1fr;
-          align-items: start;
-        }
+      @media (min-width: 720px) {
+        .media-grid { grid-template-columns: 1fr 1fr; }
       }
 
       .media {
         width: 100%;
         border-radius: 18px;
-        border: 3px solid rgba(255, 255, 255, 0.8);
+        border: 3px solid rgba(255, 255, 255, 0.85);
         box-shadow: 0 12px 30px rgba(0,0,0,0.15);
         display: block;
         object-fit: cover;
-        background: rgba(255,255,255,0.5);
+        aspect-ratio: 4 / 3;
+        background: rgba(255,255,255,0.55);
       }
 
       .caption {
         margin-top: 6px;
         font-size: 14px;
         opacity: 0.85;
-        font-weight: 600;
+        font-weight: 700;
       }
 
-      /* Simple confetti */
       .confetti {
         pointer-events: none;
         position: fixed;
@@ -149,10 +158,7 @@
         animation: fall linear forwards;
       }
       @keyframes fall {
-        to {
-          transform: translateY(110vh) rotate(720deg);
-          opacity: 1;
-        }
+        to { transform: translateY(110vh) rotate(720deg); opacity: 1; }
       }
 
       @keyframes pop {
@@ -166,6 +172,7 @@
 
     <main class="card">
       <h1>Will you be my valentine? 💖</h1>
+      <p class="subtitle">Tap a button 👇</p>
 
       <div class="buttons" id="buttons">
         <button id="yesBtn" type="button">Yes</button>
@@ -176,14 +183,12 @@
 
       <section class="celebrate" id="celebrate">
         <div class="badge">YAY!!! 🎉🥰</div>
-        <p>Best decision ever. See you on Valentine’s! 💌</p>
+        <p class="subtitle" style="margin-top:10px;">Best decision ever. See you on Valentine’s! 💌</p>
 
         <div class="media-grid">
           <div>
-            <!-- Celebration GIF: replace URL or use local file -->
             <img
               class="media"
-              id="gif"
               src="https://media.giphy.com/media/26u4cqiYI30juCOGY/giphy.gif"
               alt="Celebration GIF"
               loading="eager"
@@ -192,14 +197,12 @@
           </div>
 
           <div>
-            <!-- Your photo: put us.jpg next to index.html OR change this src -->
             <img
               class="media"
-              id="usPhoto"
-              src="./20230708_172355.jpg"
+              src="./us.jpg"
               alt="A photo of us"
               loading="eager"
-              onerror="this.alt='Could not load ./us.jpg — make sure the file exists next to index.html';"
+              onerror="this.alt='Could not load ./us.jpg — upload it next to index.html (case-sensitive)';"
             />
             <div class="caption">Us 💕</div>
           </div>
@@ -215,19 +218,23 @@
       const note = document.getElementById("note");
       const confetti = document.getElementById("confetti");
 
+      const isTouch =
+        "ontouchstart" in window ||
+        navigator.maxTouchPoints > 0 ||
+        window.matchMedia?.("(pointer: coarse)")?.matches;
+
       function rand(min, max) {
         return Math.random() * (max - min) + min;
       }
 
-      function makeConfetti(count = 120) {
+      function makeConfetti(count = 140) {
         confetti.innerHTML = "";
         const colors = ["#ff4d6d", "#ff9f1c", "#2ec4b6", "#3a86ff", "#8338ec", "#06d6a0"];
-
         for (let i = 0; i < count; i++) {
           const piece = document.createElement("i");
           piece.style.left = rand(0, 100) + "vw";
           piece.style.animationDuration = rand(1.8, 3.8) + "s";
-          piece.style.animationDelay = rand(0, 0.8) + "s";
+          piece.style.animationDelay = rand(0, 0.7) + "s";
           piece.style.background = colors[Math.floor(rand(0, colors.length))];
           piece.style.width = rand(6, 12) + "px";
           piece.style.height = rand(10, 18) + "px";
@@ -242,7 +249,7 @@
         celebrate.style.display = "block";
 
         confetti.style.display = "block";
-        makeConfetti(160);
+        makeConfetti(170);
 
         window.setTimeout(() => {
           confetti.style.display = "none";
@@ -250,34 +257,24 @@
         }, 4500);
       }
 
-      function dodgeNo() {
-        note.textContent = "Nice try 😄";
-
-        const card = document.querySelector(".card");
-        const cardRect = card.getBoundingClientRect();
-        const btnRect = noBtn.getBoundingClientRect();
-
-        const padding = 18;
-        const maxX = cardRect.width - btnRect.width - padding;
-        const maxY = 120;
-
-        const x = rand(padding, Math.max(padding, maxX));
-        const y = rand(0, maxY);
-
-        noBtn.style.position = "absolute";
-        noBtn.style.left = x + "px";
-        noBtn.style.top = (cardRect.height / 2 + y) + "px";
+      function noMessage() {
+        const lines = [
+          "Are you suuure? 🥺",
+          "Try again 😄",
+          "The universe says: pick Yes 💖",
+          "Okay but… what if: Yes? 😌",
+        ];
+        note.textContent = lines[Math.floor(Math.random() * lines.length)];
       }
 
       yesBtn.addEventListener("click", celebrateYes);
 
-      noBtn.addEventListener("mouseenter", dodgeNo);
-      noBtn.addEventListener("click", () => {
-        dodgeNo();
-        note.textContent = "The 'No' button seems shy today 🙈";
-      });
+      if (isTouch) {
+        noBtn.addEventListener("click", noMessage);
+      } else {
+        noBtn.addEventListener("mouseenter", noMessage);
+        noBtn.addEventListener("click", noMessage);
+      }
     </script>
   </body>
 </html>
-
-
